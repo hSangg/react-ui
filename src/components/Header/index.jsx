@@ -1,20 +1,26 @@
-import {Avatar, Box} from '@material-ui/core';
+import {Avatar, Box, ListItemText, Menu, MenuItem} from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import IconButton from '@material-ui/core/IconButton';
-import {makeStyles} from '@material-ui/core/styles';
+import {makeStyles, withStyles} from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import {Close} from '@material-ui/icons';
+import AccountCircleTwoToneIcon from '@material-ui/icons/AccountCircleTwoTone';
 import AssistantRoundedIcon from '@material-ui/icons/AssistantRounded';
 import Login from 'features/Auth/Login';
 import Register from 'features/Auth/Register';
 import React, {useState} from 'react';
 import {useSelector} from 'react-redux';
 import {Link} from 'react-router-dom';
-import AccountCircleTwoToneIcon from '@material-ui/icons/AccountCircleTwoTone';
+import {ListItemIcon, Divider} from '@material-ui/core';
+import PersonIcon from '@material-ui/icons/Person';
+import SettingsIcon from '@material-ui/icons/Settings';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import {useDispatch} from 'react-redux';
+import {logout} from 'features/Auth/userSlice';
 
 const MODE = {
   LOGIN: 'login',
@@ -41,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
   text: {
     color: 'white',
     fontSize: '1.2rem',
-    fontWeight: '600',
+    fontWeight: '700',
     padding: '0',
   },
   button: {
@@ -65,14 +71,18 @@ const useStyles = makeStyles((theme) => ({
   iconUserBG: {
     backgroundColor: theme.palette.primary.light,
   },
+  logo: {
+    color: '#7e57c2',
+    fontWeight: '600',
+  },
 }));
 
 export default function ButtonAppBar() {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const [mode, setMode] = useState(MODE.LOGIN);
+  const dispatch = useDispatch();
 
   const isLogin = !!useSelector((x) => x.user.current.id);
-  console.log(isLogin);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -82,23 +92,79 @@ export default function ButtonAppBar() {
     setOpen(false);
   };
 
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClickAvatar = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleCloseUser = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    dispatch(logout());
+    handleCloseUser();
+  };
+
   const classes = useStyles();
+
+  const StyledMenu = withStyles({
+    paper: {
+      border: '1px solid #648dae',
+    },
+  })((props) => (
+    <Menu
+      elevation={0}
+      getContentAnchorEl={null}
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'center',
+      }}
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'center',
+      }}
+      {...props}
+    />
+  ));
+
+  const StyledMenuItem = withStyles((theme) => ({
+    root: {
+      '&:focus': {
+        backgroundColor: theme.palette.primary.main,
+        '& .MuiListItemIcon-root, & .MuiListItemText-primary': {
+          color: theme.palette.common.white,
+        },
+      },
+    },
+  }))(MenuItem);
 
   return (
     <div className={classes.root}>
       <AppBar position="static" className={classes.background}>
         <Toolbar>
-          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+          <IconButton
+            edge="start"
+            className={classes.menuButton}
+            color="inherit"
+            aria-label="menu">
             <AssistantRoundedIcon fontSize="large" />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
             <Link to="/" className={classes.link}>
-              <Button className={classes.text}> H_sang</Button>
+              <Button className={classes.text}>
+                {' '}
+                H_
+                <Typography className={classes.logo} variant="h6">
+                  sang
+                </Typography>
+              </Button>
             </Link>
           </Typography>
           {isLogin && (
             <>
-              <IconButton>
+              <IconButton onClick={handleClickAvatar}>
                 <Avatar className={classes.iconUserBG}>
                   <AccountCircleTwoToneIcon fontSize="large" />
                 </Avatar>
@@ -107,7 +173,10 @@ export default function ButtonAppBar() {
           )}
           {!isLogin && (
             <>
-              <Button className={classes.button} variant="contained" onClick={handleClickOpen}>
+              <Button
+                className={classes.button}
+                variant="contained"
+                onClick={handleClickOpen}>
                 Resignter
               </Button>
             </>
@@ -115,13 +184,15 @@ export default function ButtonAppBar() {
         </Toolbar>
       </AppBar>
 
+      {/* Login Register */}
+
       <Dialog
         open={open}
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
         disableBackdropClick="true"
         disableEscapeKeyDown="true"
-        maxWidth="md"
+        maxWidth={mode === MODE.LOGIN ? 'sm' : 'md'}
         fullWidth>
         <DialogContent>
           <IconButton onClick={handleClose} className={classes.iconButton}>
@@ -134,7 +205,9 @@ export default function ButtonAppBar() {
               <Box onClick={() => setMode(MODE.REGISTER)}>
                 <Typography className={classes.modeButton}>
                   Don't have an account ?{' '}
-                  <Typography className={classes.modeActive}>Register here</Typography>
+                  <Typography className={classes.modeActive}>
+                    Register here
+                  </Typography>
                 </Typography>
               </Box>
             </>
@@ -146,13 +219,45 @@ export default function ButtonAppBar() {
               <Box onClick={() => setMode(MODE.LOGIN)}>
                 <Typography className={classes.modeButton}>
                   Have an account ?{' '}
-                  <Typography className={classes.modeActive}>Login here</Typography>
+                  <Typography className={classes.modeActive}>
+                    Login here
+                  </Typography>
                 </Typography>
               </Box>
             </>
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Menu */}
+
+      <StyledMenu
+        id="customized-menu"
+        anchorEl={anchorEl}
+        keepMounted
+        open={Boolean(anchorEl)}
+        onClose={handleCloseUser}>
+        <StyledMenuItem>
+          <ListItemIcon>
+            <PersonIcon />
+          </ListItemIcon>
+          <ListItemText primary="Profile" />
+        </StyledMenuItem>
+        <Divider />
+        <StyledMenuItem>
+          <ListItemIcon>
+            <SettingsIcon />
+          </ListItemIcon>
+          <ListItemText primary="Setting" />
+        </StyledMenuItem>
+        <Divider />
+        <StyledMenuItem onClick={handleLogout}>
+          <ListItemIcon>
+            <ExitToAppIcon />
+          </ListItemIcon>
+          <ListItemText primary="Logout" />
+        </StyledMenuItem>
+      </StyledMenu>
     </div>
   );
 }
