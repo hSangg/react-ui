@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/hSangg/react-ui.git/static/css/main.d3dacc4c.css",
+    "main.js": "/hSangg/react-ui.git/static/js/main.6b6e238a.js",
+    "static/js/787.42d4cca0.chunk.js": "/hSangg/react-ui.git/static/js/787.42d4cca0.chunk.js",
+    "index.html": "/hSangg/react-ui.git/index.html",
+    "main.d3dacc4c.css.map": "/hSangg/react-ui.git/static/css/main.d3dacc4c.css.map",
+    "main.6b6e238a.js.map": "/hSangg/react-ui.git/static/js/main.6b6e238a.js.map",
+    "787.42d4cca0.chunk.js.map": "/hSangg/react-ui.git/static/js/787.42d4cca0.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.d3dacc4c.css",
+    "static/js/main.6b6e238a.js"
+  ]
+}
