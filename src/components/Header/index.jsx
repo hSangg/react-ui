@@ -14,7 +14,7 @@ import Login from 'features/Auth/Login';
 import Register from 'features/Auth/Register';
 import React, {useState} from 'react';
 import {useSelector} from 'react-redux';
-import {Link} from 'react-router-dom';
+import {Link, NavLink} from 'react-router-dom';
 import {ListItemIcon, Divider} from '@material-ui/core';
 import PersonIcon from '@material-ui/icons/Person';
 import SettingsIcon from '@material-ui/icons/Settings';
@@ -74,6 +74,13 @@ const useStyles = makeStyles((theme) => ({
   logo: {
     color: '#7e57c2',
     fontWeight: '600',
+  },
+  navbar: {
+    '& a': {
+      textDecoration: 'none',
+      color: '#fff',
+      margin: theme.spacing(2),
+    },
   },
 }));
 
@@ -161,6 +168,9 @@ export default function ButtonAppBar() {
                 </Typography>
               </Button>
             </Link>
+          </Typography>
+          <Typography className={classes.navbar}>
+            <NavLink to="./products">Products</NavLink>
           </Typography>
           {isLogin && (
             <>

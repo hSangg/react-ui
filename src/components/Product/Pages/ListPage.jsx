@@ -1,13 +1,11 @@
-import {Box, Container, Grid, Typography, makeStyles} from '@material-ui/core';
+import {Box, Container, Grid, makeStyles} from '@material-ui/core';
 import {Pagination} from '@material-ui/lab';
 import productApi from 'api/productApi';
-import React, {useState} from 'react';
-import {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
+import ProductFilters from '../Component/ProductFilters';
 import ProductList from '../Component/ProductList';
 import ProductSkeleton from '../Component/ProductSkeleton';
 import ProductSorting from '../Component/ProductSorting';
-import GradeRoundedIcon from '@material-ui/icons/GradeRounded';
-import ProductFilters from '../Component/ProductFilters';
 
 const useStyles = makeStyles((theme) => ({
   root: {

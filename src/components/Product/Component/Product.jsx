@@ -24,13 +24,6 @@ function Product({product = {}}) {
       ? `- ${Number.parseInt(product.promotionPercent)}%`
       : '';
 
-  const name = product.name
-    .toLowerCase()
-    .split(' ')
-    .map((x) => {
-      return x[0].toUpperCase() + x.substring(1) + ' ';
-    });
-
   const price = `${new Intl.NumberFormat('vi-VN').format(
     Number.parseInt(product.salePrice)
   )} VND`;
@@ -46,7 +39,7 @@ function Product({product = {}}) {
         <img src={thumbnail} />
       </Box>
 
-      <Typography variant="body2">{name}</Typography>
+      <Typography variant="body2">{product.name}</Typography>
       <Rating
         value={randomRating()}
         size="small"

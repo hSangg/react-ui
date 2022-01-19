@@ -22,3 +22,12 @@ img {
   height: 100%;
   object-fit: cover;
 }
+
+a {
+  display: block;
+  text-decoration: none;
+}
+
+.active {
+  border-bottom: 1px white solid;
+}
