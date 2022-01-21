@@ -1,8 +1,8 @@
-import { Box, makeStyles } from '@material-ui/core';
+import {Box, makeStyles} from '@material-ui/core';
 import Chip from '@material-ui/core/Chip';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import categoryApi from 'api/categoryApi';
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -106,10 +106,6 @@ function FilterViewer({filters, onChange}) {
       onToggle: (filters) => {},
     },
   ];
-
-  const 
-
-
 
   const classes = useStyles();
   return (
