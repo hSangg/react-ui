@@ -2,6 +2,7 @@ import {Box, Container, Grid, makeStyles} from '@material-ui/core';
 import {Pagination} from '@material-ui/lab';
 import productApi from 'api/productApi';
 import React, {useEffect, useState} from 'react';
+import FilterViewer from '../Component/FilterViewer';
 import ProductFilters from '../Component/ProductFilters';
 import ProductList from '../Component/ProductList';
 import ProductSkeleton from '../Component/ProductSkeleton';
@@ -62,7 +63,6 @@ function ProductListPage() {
   }, [filters]);
 
   const {limit, page, total} = pagination;
-  console.log(page);
   const countPage = Math.ceil(total / limit);
 
   const handlePageChange = (event, page) => {
@@ -104,6 +104,8 @@ function ProductListPage() {
 
             <Grid item className={classes.right}>
               <ProductSorting onChange={handleSortChange} currentValue={sort} />
+
+              <FilterViewer filters={filters} onChange={handleFiltersChange} />
 
               {!loading ? (
                 <>

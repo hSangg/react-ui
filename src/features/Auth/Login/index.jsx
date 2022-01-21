@@ -16,7 +16,6 @@ function Login({onClose}) {
       const action = login(value);
       const resultAction = await dispatch(action);
       const user = unwrapResult(resultAction);
-
       //success
       onClose();
     } catch (error) {

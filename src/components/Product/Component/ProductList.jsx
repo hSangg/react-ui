@@ -1,5 +1,4 @@
 import {Box, Grid} from '@material-ui/core';
-import {Skeleton} from '@material-ui/lab';
 import React from 'react';
 import Product from './Product';
 

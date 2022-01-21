@@ -1,10 +1,10 @@
+import {createTheme, ThemeProvider} from '@material-ui/core';
 import 'App.scss';
 import Header from 'components/Header';
 import ProductFeature from 'components/Product';
 import {Route, Switch} from 'react-router-dom';
-import {createMuiTheme, ThemeProvider} from '@material-ui/core';
 
-const theme = createMuiTheme({
+const theme = createTheme({
   typography: {
     fontFamily: 'Montserrat',
     fontWeightLight: '400',
