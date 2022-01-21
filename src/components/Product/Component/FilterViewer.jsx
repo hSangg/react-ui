@@ -20,7 +20,7 @@ function FilterViewer({filters, onChange}) {
   const [categoryList, setCategoryList] = useState([]);
 
   const visibleFilters = useMemo(() => {
-    return FILTER_LIST.filter((x) => x.isVisible(filters));
+    return FILTER_LIST?.filter((x) => x.isVisible(filters));
   }, [filters]);
 
   useEffect(() => {
