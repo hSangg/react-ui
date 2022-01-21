@@ -118,7 +118,7 @@ function FilterViewer({filters, onChange}) {
   const classes = useStyles();
   return (
     <Box className={classes.root}>
-      {FILTER_LIST.map((x) => (
+      {visibleFilters.map((x) => (
         <li>
           <Chip
             label={x.getLabel(filters)}
