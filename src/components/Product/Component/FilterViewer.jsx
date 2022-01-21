@@ -1,8 +1,8 @@
-import {Box, makeStyles} from '@material-ui/core';
+import { Box, makeStyles } from '@material-ui/core';
 import Chip from '@material-ui/core/Chip';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 import categoryApi from 'api/categoryApi';
-import React, {useEffect, useMemo, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -18,10 +18,6 @@ const useStyles = makeStyles((theme) => ({
 
 function FilterViewer({filters, onChange}) {
   const [categoryList, setCategoryList] = useState([]);
-
-  const visibleFilters = useMemo(() => {
-    return FILTER_LIST?.filter((x) => x.isVisible(filters));
-  }, [filters]);
 
   useEffect(() => {
     (async () => {
@@ -111,10 +107,14 @@ function FilterViewer({filters, onChange}) {
     },
   ];
 
+  const 
+
+
+
   const classes = useStyles();
   return (
     <Box className={classes.root}>
-      {visibleFilters.map((x) => (
+      {FILTER_LIST.filter((x) => x.isVisible(filters)).map((x) => (
         <li>
           <Chip
             label={x.getLabel(filters)}
