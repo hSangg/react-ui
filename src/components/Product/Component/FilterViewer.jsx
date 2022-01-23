@@ -29,9 +29,7 @@ function FilterViewer({filters, onChange}) {
         }));
 
         setCategoryList(list);
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
     })();
   }, []);
 
@@ -56,8 +54,6 @@ function FilterViewer({filters, onChange}) {
       getLabel: (filters) => 'Có khuyến mãi',
       isActive: (filters) => true,
       isVisible: (filters) => {
-        console.log('filters: ', filters);
-        console.log('List: ', categoryList);
         return filters.isPromotion;
       },
       isRemovable: true,

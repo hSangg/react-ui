@@ -11,7 +11,7 @@ InputField.propTypes = {
   disabled: PropTypes.bool,
 };
 
-function InputField({form, name, label, disabled}) {
+function InputField({form, name, label, disabled, variant}) {
   const {errors} = form;
   const hasError = errors[name];
 
@@ -26,7 +26,7 @@ function InputField({form, name, label, disabled}) {
       disabled={disabled}
       error={!!hasError}
       helperText={errors[name]?.message}
-      variant="outlined"
+      variant={variant || 'outlined'}
     />
   );
 }

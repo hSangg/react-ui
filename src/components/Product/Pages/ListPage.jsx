@@ -1,12 +1,14 @@
 import {Box, Container, Grid, makeStyles} from '@material-ui/core';
 import {Pagination} from '@material-ui/lab';
 import productApi from 'api/productApi';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
+import {useHistory, useLocation} from 'react-router-dom';
 import FilterViewer from '../Component/FilterViewer';
 import ProductFilters from '../Component/ProductFilters';
 import ProductList from '../Component/ProductList';
 import ProductSkeleton from '../Component/ProductSkeleton';
 import ProductSorting from '../Component/ProductSorting';
+import queryString from 'query-string';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,51 +43,95 @@ function ProductListPage() {
   const [sort, setSort] = useState(null);
   const [productList, setProductList] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [filters, setFilters] = useState({
-    _page: 1,
-    _limit: 9,
-    _sort: sort,
-  });
+
+  const history = useHistory();
+  const location = useLocation();
+
+  const queryParam = useMemo(() => {
+    const params = queryString.parse(location.search);
+
+    return {
+      ...params,
+      _page: Number.parseInt(params._page) || 1,
+      _limit: Number.parseInt(params._limit) || 9,
+      _sort: params._sort || sort,
+      ['category.id']: params['category.id'],
+      isFreeShip: params.isFreeShip === 'true',
+      isPromotion: params.isPromotion === 'true',
+    };
+  }, [location.search]);
+
+  // const [filters, setFilters] = useState({
+  //   ...queryParam,
+  //   _page: queryParam._page || 1,
+  //   _limit: queryParam._limit || 9,
+  //   _sort: queryParam._sort || sort,
+  // });
+
+  // useEffect(() => {
+  //   history.push({
+  //     pathname: history.location.pathname,
+  //     search: queryString.stringify(filters),
+  //   });
+  // }, [history, filters]);
+
   const [pagination, setPagination] = useState({});
 
   useEffect(() => {
     (async () => {
       try {
-        const response = await productApi.getAll(filters);
+        const response = await productApi.getAll(queryParam);
         const {data, pagination} = response;
         setProductList(data);
         setPagination(pagination);
         setLoading(true);
       } catch (error) {
-        console.log(error);
+        console.log('error: ', error);
       }
     })();
-  }, [filters]);
+  }, [queryParam]);
 
   const {limit, page, total} = pagination;
   const countPage = Math.ceil(total / limit);
 
-  const handlePageChange = (event, page) => {
-    setFilters((pre) => ({
-      ...pre,
+  const handlePageChange = (e, page) => {
+    const filters = {
+      ...queryParam,
       _page: page,
-    }));
+    };
+
+    history.push({
+      pathname: history.location.pathname,
+      search: queryString.stringify(filters),
+    });
   };
 
   const handleSortChange = (e, newValue) => {
-    setFilters((pre) => ({
-      ...pre,
-      _sort: newValue,
-    }));
+    console.log('newValue: ', newValue);
+
+    const filters = {
+      ...queryParam,
+      ...newValue,
+    };
+
+    history.push({
+      pathname: history.location.pathname,
+      search: queryString.stringify(filters),
+    });
 
     setSort(newValue);
   };
 
   const handleFiltersChange = (newFilters) => {
-    setFilters((pre) => ({
-      ...pre,
+    const filters = {
+      ...queryParam,
       ...newFilters,
-    }));
+    };
+
+    history.push({
+      pathname: history.location.pathname,
+      search: queryString.stringify(filters),
+    });
   };
 
   return (
@@ -96,7 +142,7 @@ function ProductListPage() {
             <Grid item className={classes.left}>
               <Box>
                 <ProductFilters
-                  filters={filters}
+                  filters={queryParam}
                   onChange={handleFiltersChange}
                 />
               </Box>
@@ -105,7 +151,10 @@ function ProductListPage() {
             <Grid item className={classes.right}>
               <ProductSorting onChange={handleSortChange} currentValue={sort} />
 
-              <FilterViewer filters={filters} onChange={handleFiltersChange} />
+              <FilterViewer
+                filters={queryParam}
+                onChange={handleFiltersChange}
+              />
 
               {!loading ? (
                 <>

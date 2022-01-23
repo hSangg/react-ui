@@ -1,5 +1,6 @@
 import React from 'react';
 import {Route, Switch, useRouteMatch} from 'react-router-dom';
+import DetailPage from './Pages/DetailPage';
 import ProductListPage from './Pages/ListPage';
 
 function ProductFeature() {
@@ -9,6 +10,7 @@ function ProductFeature() {
     <div>
       <Switch>
         <Route path={match.url} exact component={ProductListPage} />
+        <Route path={`${match.url}/:productId`} component={DetailPage} />
       </Switch>
     </div>
   );

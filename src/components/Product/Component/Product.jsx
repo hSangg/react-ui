@@ -3,6 +3,7 @@ import {STATIC_HOST, THUMBNAIL_PLACEHOLDER} from 'Constant/common';
 import React from 'react';
 import {Rating} from '@material-ui/lab';
 import StarRoundedIcon from '@material-ui/icons/StarRounded';
+import {useHistory} from 'react-router-dom/cjs/react-router-dom.min';
 
 const useStyles = makeStyles((theme) => ({
   price: {
@@ -33,8 +34,13 @@ function Product({product = {}}) {
     return Math.floor(Math.random() * 5) + 1;
   };
 
+  const history = useHistory();
+  const handleClick = () => {
+    history.push(`/products/${product.id}`);
+  };
+
   return (
-    <Box padding={1.2}>
+    <Box padding={1.2} onClick={handleClick}>
       <Box padding={1}>
         <img src={thumbnail} />
       </Box>
