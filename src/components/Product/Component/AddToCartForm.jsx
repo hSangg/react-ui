@@ -6,7 +6,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import InputField from 'components/InputField';
+import QuantityField from 'components/QuantityField';
 import React from 'react';
 import {useForm} from 'react-hook-form';
 import * as yup from 'yup';
@@ -14,7 +14,6 @@ import * as yup from 'yup';
 const useStyles = makeStyles((theme) => ({
   input: {
     '& div': {
-      marginBottom: theme.spacing(1),
       color: '#fff',
     },
   },
@@ -29,10 +28,9 @@ function AddToCartForm({onSubmit}) {
   const schema = yup.object().shape({
     quantity: yup
       .number()
+      .required('Nhập vào số lượng sản phẩm')
       .min(1, 'Ít nhất một sản phẩm')
-      .test('so luong san pham', 'vui long nhap so luong san pham', (value) => {
-        return value != '';
-      }),
+      .typeError('Nhập vào số lượng sản phẩm'),
   });
 
   const form = useForm({
@@ -50,16 +48,17 @@ function AddToCartForm({onSubmit}) {
 
   return (
     <form onSubmit={form.handleSubmit(handleSubmit)} className={classes.input}>
-      <Typography className={classes.title}>Số lượng</Typography>
+      <Typography className={classes.title}>Số lượng: </Typography>
 
-      <InputField name="quantity" form={form} variant={'standard'} />
+      <QuantityField name="quantity" form={form} variant={'standard'} />
 
       <Button
         fullWidth
         color="primary"
         variant="contained"
         type="submit"
-        endIcon={<ShoppingCartIcon />}>
+        endIcon={<ShoppingCartIcon />}
+        style={{width: '323px'}}>
         Buy
       </Button>
       {isSubmitting && <LinearProgress />}

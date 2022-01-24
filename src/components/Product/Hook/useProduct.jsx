@@ -16,6 +16,7 @@ function useProduct(id) {
       } catch (error) {
         console.log('error: ', error);
       }
+      setLoading(false);
     })();
   }, [id]);
   return {product, loading};

@@ -31,3 +31,7 @@ a {
 .active {
   border-bottom: 1px white solid;
 }
+
+.attrs-block ul > li:nth-child(odd) {
+  background-color: #7986cb45 !important;
+}

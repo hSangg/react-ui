@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: '0.5rem',
   },
   rating: {
-    marginBottom: '0.5rem',
+    marginBottom: '1rem',
     background: '#ffff0014',
     borderRadius: '38px',
     padding: '4px 9px',
