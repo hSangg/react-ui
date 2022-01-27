@@ -6,8 +6,10 @@ import {RemoveCircleOutline} from '@material-ui/icons';
 import {makeStyles} from '@material-ui/styles';
 import PropTypes from 'prop-types';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import React from 'react';
+import React, {useState} from 'react';
 import {Controller} from 'react-hook-form';
+import {useDispatch} from 'react-redux';
+import {setQuantity} from 'components/Cart/cartSlice';
 
 QuantityField.propTypes = {
   form: PropTypes.object,
@@ -33,12 +35,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function QuantityField({form, name, label}) {
+function QuantityField({form, name, label, id = 0}) {
   const {errors, setValue} = form;
   const hasError = errors[name];
-
+  const dispatch = useDispatch();
   const classes = useStyles();
-
   return (
     <FormControl
       error={!!hasError}
@@ -56,7 +57,10 @@ function QuantityField({form, name, label}) {
         render={({onChange, onBlur, value}) => (
           <div className={classes.root}>
             <IconButton
-              onClick={() => setValue(name, Number.parseInt(value - 1) || 1)}>
+              onClick={() => {
+                setValue(name, Number.parseInt(value - 1) || 1);
+                dispatch(setQuantity({id, quantity: value - 1}));
+              }}>
               <RemoveCircleOutline />
             </IconButton>
             <OutlinedInput
@@ -66,7 +70,10 @@ function QuantityField({form, name, label}) {
               value={value}
             />
             <IconButton
-              onClick={() => setValue(name, Number.parseInt(value + 1))}>
+              onClick={() => {
+                setValue(name, Number.parseInt(value + 1));
+                dispatch(setQuantity({id, quantity: value + 1}));
+              }}>
               <AddCircleOutlineIcon />
             </IconButton>
           </div>

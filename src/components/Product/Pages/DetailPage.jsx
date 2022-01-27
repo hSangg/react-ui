@@ -11,6 +11,8 @@ import ProductReview from '../Component/ProductReview';
 import ProductThumbnail from '../Component/ProductThumbnail';
 import useProduct from '../Hook/useProduct';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import {useDispatch} from 'react-redux';
+import {addNewItem, showMiniCart} from 'components/Cart/cartSlice';
 
 const useStyles = makeStyles((theme) => ({
   root: {color: 'white', marginTop: theme.spacing(2)},
@@ -32,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
 
 function DetailPage() {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const {
     params: {productId},
     url,
@@ -46,8 +49,15 @@ function DetailPage() {
       </div>
     );
 
-  const handleAddToCartForm = (value) => {
-    console.log('value: ', value);
+  const handleAddToCartForm = ({quantity}) => {
+    dispatch(
+      addNewItem({
+        id: product.id,
+        product,
+        quantity,
+      })
+    );
+    dispatch(showMiniCart());
   };
 
   return (

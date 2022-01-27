@@ -1,4 +1,13 @@
-import {Avatar, Box, ListItemText, Menu, MenuItem} from '@material-ui/core';
+import {
+  Avatar,
+  Badge,
+  Box,
+  Divider,
+  ListItemIcon,
+  ListItemText,
+  Menu,
+  MenuItem,
+} from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -10,17 +19,20 @@ import Typography from '@material-ui/core/Typography';
 import {Close} from '@material-ui/icons';
 import AccountCircleTwoToneIcon from '@material-ui/icons/AccountCircleTwoTone';
 import AssistantRoundedIcon from '@material-ui/icons/AssistantRounded';
-import Login from 'features/Auth/Login';
-import Register from 'features/Auth/Register';
-import React, {useState} from 'react';
-import {useSelector} from 'react-redux';
-import {Link, NavLink} from 'react-router-dom';
-import {ListItemIcon, Divider} from '@material-ui/core';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import PersonIcon from '@material-ui/icons/Person';
 import SettingsIcon from '@material-ui/icons/Settings';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import {useDispatch} from 'react-redux';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import {hideMiniCart} from 'components/Cart/cartSlice';
+import {cartItemsCountSelector} from 'components/Cart/Selector';
+import Login from 'features/Auth/Login';
+import Register from 'features/Auth/Register';
 import {logout} from 'features/Auth/userSlice';
+import React, {useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {useHistory} from 'react-router-dom';
+import {Link, NavLink} from 'react-router-dom';
+import MiniCart from './components/MiniCart';
 
 const MODE = {
   LOGIN: 'login',
@@ -30,6 +42,7 @@ const MODE = {
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    position: 'relative',
   },
   menuButton: {},
   title: {
@@ -88,8 +101,10 @@ export default function ButtonAppBar() {
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState(MODE.LOGIN);
   const dispatch = useDispatch();
+  const cartItemCount = useSelector(cartItemsCountSelector);
 
   const isLogin = !!useSelector((x) => x.user.current.id);
+  const {showMiniCart} = useSelector((state) => state.cart);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -114,7 +129,13 @@ export default function ButtonAppBar() {
     handleCloseUser();
   };
 
+  const handleCartClick = () => {
+    history.push('/carts');
+    dispatch(hideMiniCart());
+  };
+
   const classes = useStyles();
+  const history = useHistory();
 
   const StyledMenu = withStyles({
     paper: {
@@ -170,8 +191,18 @@ export default function ButtonAppBar() {
             </Link>
           </Typography>
           <Typography className={classes.navbar}>
-            <NavLink to="./products">Products</NavLink>
+            <NavLink to="/products">Products</NavLink>
           </Typography>
+
+          <IconButton
+            style={{marginRight: '20px'}}
+            aria-label="show 4 new mails"
+            color="inherit"
+            onClick={handleCartClick}>
+            <Badge badgeContent={cartItemCount} color="secondary">
+              <ShoppingCartIcon />
+            </Badge>
+          </IconButton>
           {isLogin && (
             <>
               <IconButton onClick={handleClickAvatar}>
@@ -181,6 +212,7 @@ export default function ButtonAppBar() {
               </IconButton>
             </>
           )}
+
           {!isLogin && (
             <>
               <Button
@@ -191,6 +223,8 @@ export default function ButtonAppBar() {
               </Button>
             </>
           )}
+
+          {showMiniCart && <MiniCart />}
         </Toolbar>
       </AppBar>
 

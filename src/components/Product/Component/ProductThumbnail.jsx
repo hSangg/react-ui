@@ -4,7 +4,6 @@ import React from 'react';
 ProductThumbnail.propTypes = {};
 
 function ProductThumbnail({product}) {
-  console.log('product: ', product);
   const thumbnail = product?.thumbnail?.url
     ? `${STATIC_HOST}${product.thumbnail.url}`
     : THUMBNAIL_PLACEHOLDER;
